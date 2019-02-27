@@ -1,22 +1,34 @@
 <template>
-  <div>
-    <profile-data/>
-    <dashboard/>
-    <games/>
+  <div class="wrapper">
+    <side-menu @showpage="showpage"/>
+    <div class="main-panel">
+      <topbar :pagetoshow="page"/>
+      <content-container :pagetoshow="page"/>
+    </div>
   </div>
 </template>
 
 <script>
-  import ProfileData from "./profile/ProfileData.vue";
-  import Dashboard from "./Widgets/Dashboard.vue";
-  import Games from "./Games/Games.vue";
+  import Topbar from "./Topbar.vue";
+  import Menu from "./Menu.vue";
+  import Content from "./Content.vue";
 
   export default{
     name: "App",
+    data(){
+      return{
+        page: "dashboard"
+      }
+    },
     components: {
-      "profile-data": ProfileData,
-      "dashboard": Dashboard,
-      "games": Games,
+      "topbar": Topbar,
+      "side-menu": Menu,
+      "content-container": Content,
+    },
+    methods:{
+      showpage: function(page){
+        this.page = page;
+      }
     }
   }
 </script>

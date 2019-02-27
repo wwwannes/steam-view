@@ -35,6 +35,18 @@ app.get('/GetFriendList', function(req, res) {
 	});
 });
 
+app.get('/GetProfileLevel', function(req, res) {
+	var steamkey = req.query.key;
+  var userid = req.query.steamid;
+
+	var url = 'http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key='+steamkey+'&steamid='+userid;
+	request(url, function(err, response, body) {
+		if(!err && response.statusCode < 400) {
+			res.send(body);
+		}
+	});
+});
+
 app.get('/GetOwnedGames', function(req, res) {
 	var steamkey = req.query.key;
   var userid = req.query.steamid;
@@ -87,6 +99,15 @@ app.get('/GetPriceOfGame', function(req, res) {
 	var appids = req.query.appid; //needs to be comma seperated
 
 	var url = 'https://store.steampowered.com/api/appdetails/?appids='+appids+'&filters=price_overview';
+	request(url, function(err, response, body) {
+		if(!err && response.statusCode < 400) {
+			res.send(body);
+		}
+	});
+});
+
+app.get('/GetTopGames', function(req, res) {
+	var url = 'http://steamspy.com/api.php?request=top100forever';
 	request(url, function(err, response, body) {
 		if(!err && response.statusCode < 400) {
 			res.send(body);

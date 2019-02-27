@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Most Played Globaly</h3>
+    <h3>Most Played</h3>
     <ul>
       <li v-for="item in recentGames">
         <b>{{item.name}}: </b>
@@ -12,16 +12,16 @@
 
 <script>
   export default{
-    name: "LastPlayedGames",
+    name: "MostPlayedGames",
     data(){
       return{
-        recentGames: []
+        mostPlayedGames: []
       }
     },
     dependencies: ["apikey", "userid"],
     created: function(){
-      $.getJSON('http://localhost:3000/GetRecentlyPlayedGames/?key='+this.apikey+'&steamid='+this.userid).done(data => {
-        this.recentGames = data.response.games;
+      $.getJSON('http://localhost:3000/GetPlayerAchievements/?key='+this.apikey+'&steamid='+this.userid+'&appid=550').done(data => {
+        this.mostPlayedGames = data;
       });
     }
   }

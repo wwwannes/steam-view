@@ -1,16 +1,25 @@
 <template>
-  <div>
-    <h4>{{profileData.personaname}}</h4>
-    <img :src="profileData.avatarmedium"/>
-    <b>Friendslist</b>
-    <ul>
-      <li v-for="friend in friends">
-        <h5>{{friend.personaname}}</h5>
-        <span>Online/last online ?</span>
-        <span>How long member ?</span>
-        <img :src="friend.avatarmedium"/>
-      </li>
-    </ul>
+  <div class="col-md-4">
+    <div class="card card-user">
+      <div class="card-body">
+        <div class="author">
+          <div class="block block-one"></div>
+          <div class="block block-two"></div>
+          <div class="block block-three"></div>
+          <div class="block block-four"></div>
+          <img class="avatar" :src="profileData.avatarfull"/>
+          <p class="description">{{profileData.personaname}}</p>
+          <h5 class="title">Level {{profileLevel}}</h5>
+        </div>
+        <div class="card-description text-center">
+          <span>Member since {{memberSince}}</span><br/>
+          <span>Last online {{lastOnline}} ago</span>
+        </div>
+        <div class="card-footer text-center">
+          <a :href="profileData.profileurl" target="_blank" class="btn btn-fill btn-primary">Visit profile</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,7 +29,9 @@
     data(){
       return{
         profileData: [],
-        friends: []
+        profileLevel: 0,
+        memberSince: "",
+        lastOnline: ""
       }
     },
     dependencies: ["apikey", "userid"],
@@ -30,22 +41,33 @@
 
       $.getJSON('http://localhost:3000/GetProfile/?key='+key+'&steamids='+id)
       .done( data => {
+        var joinDate = new Date(data.response.players[0].timecreated * 1000);
+        var day = joinDate.getDate();
+        var month = joinDate.getMonth();
+        var year = joinDate.getFullYear();
+
+        var onlineDate = data.response.players[0].lastlogoff * 1000; //unix timestamp
+        var thisMoment = new Date().getTime(); //unix timestamp
+        var days = new Date(thisMoment - onlineDate);
+
+        if(days/1000/60/60 >= 24){
+          this.lastOnline = Math.round(days/1000/60/60/24) +" days";
+        } else if(days/1000/60/60/24 >= 7){
+          this.lastOnline = Math.round(days/1000/60/60/24/7) +" weeks";
+        } if(days/1000/60/60/24/7 >= 12){
+          this.lastOnline = Math.round(days/1000/60/60/24/7/12) +" months";
+        } else {
+          this.lastOnline = Math.round(days/1000/60/60) +" hours";
+        }
+
+        this.memberSince = day+"/"+month+"/"+year;
         this.profileData = data.response.players[0];
       });
 
-      $.getJSON('http://localhost:3000/GetFriendList/?key='+key+'&steamid='+id) // get steaid of friends
+      $.getJSON('http://localhost:3000/GetProfileLevel/?key='+key+'&steamid='+id)
       .done( data => {
-
-        var allFriends = this.friends;
-
-        $.each(data.friendslist.friends, function(){
-          $.getJSON('http://localhost:3000/GetProfile/?key='+key+'&steamids='+this.steamid)
-          .done( info => {
-            allFriends.push(info.response.players[0])
-          });
-        });
+        this.profileLevel = data.response.player_level;
       });
-
     }
   }
 </script>

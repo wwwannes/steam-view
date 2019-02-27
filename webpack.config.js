@@ -22,6 +22,21 @@ module.exports = {
           }]
       },
       {
+        test: /\.scss$/,
+          use: [
+            {
+              loader: "style-loader"
+            }, {
+              loader: "css-loader"
+            }, {
+              loader: "sass-loader",
+              options: {
+                  includePaths: ["app/assets/styles/import.scss"]
+              }
+            }
+          ]
+      },
+      {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
@@ -65,7 +80,7 @@ module.exports = {
   performance: {
     hints: false
   },
-  
+
   devtool: '#eval-source-map'
 }
 

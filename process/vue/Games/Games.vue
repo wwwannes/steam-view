@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <h4>Games</h4>
-    <ul>
-      <games-list v-for="item in games" :games="item" @showGameDetail="showGameDetail"/>
-    </ul>
-    <game-detail :game="game"/>
+  <div class="row gameContainer" :class="{hide: !showpage}">
+    <div class="row" :class="{hide: !hidedetail}">
+      <games-list v-for="(item, i) in games" :key="i" :games="item" @showGameDetail="showGameDetail" @closeDetails="closeDetails"/>
+    </div>
+    <div :class="{hide: hidedetail}" ref="detailContainer">
+      <game-detail :game="game" @closeDetails="closeDetails"/>
+    </div>
   </div>
 </template>
 
 <script>
-
   import _ from "lodash";
   import GamesList from "./GamesList.vue";
   import GameDetail from "./GameDetail.vue";
 
   export default{
     name: "Games",
+    props: ["showpage"],
     data(){
       return{
         games: [],
-        game: []
+        game: [],
+        hidedetail: true
       }
     },
     dependencies: ["apikey", "userid"],
@@ -32,7 +34,11 @@
     },
     methods:{
       showGameDetail: function(info){
+        console.log(info);
         this.game = info;
+      },
+      closeDetails: function(bool){
+        this.hidedetail = bool;
       }
     },
     components: {
@@ -41,3 +47,12 @@
     }
   }
 </script>
+
+<style>
+  .gameContainer{
+    position: relative;
+  }
+  .hide{
+    display: none;
+  }
+</style>
