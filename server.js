@@ -11,6 +11,18 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.get('/GetSteamID', function(req, res) {
+	var steamkey = req.query.key;
+  var username = req.query.username;
+
+	var url = 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key='+steamkey+'&vanityurl='+username;
+	request(url, function(err, response, body) {
+		if(!err && response.statusCode < 400) {
+			res.send(body);
+		}
+	});
+});
+
 app.get('/GetProfile', function(req, res) {
 	var steamkey = req.query.key;
   var userid = req.query.steamids;

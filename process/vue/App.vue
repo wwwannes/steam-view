@@ -1,33 +1,30 @@
 <template>
-  <div class="wrapper">
-    <side-menu @showpage="showpage"/>
-    <div class="main-panel">
-      <topbar :pagetoshow="page"/>
-      <content-container :pagetoshow="page"/>
-    </div>
+  <div>
+    <!--<login-screen/>
+    <loggedin-screen/>-->
+    <component :is="currentComponent" @loggedIn="loggedIn" v-if="currentComponent == 'login-screen'"/>
+    <component :is="currentComponent" v-else/>
   </div>
 </template>
 
 <script>
-  import Topbar from "./Topbar.vue";
-  import Menu from "./Menu.vue";
-  import Content from "./Content.vue";
+  import Login from "./Login/Login.vue";
+  import Loggedin from "./Login/Loggedin.vue";
 
   export default{
     name: "App",
     data(){
       return{
-        page: "dashboard"
+        currentComponent: "login-screen"
       }
     },
     components: {
-      "topbar": Topbar,
-      "side-menu": Menu,
-      "content-container": Content,
+      "login-screen": Login,
+      "loggedin-screen": Loggedin
     },
     methods:{
-      showpage: function(page){
-        this.page = page;
+      loggedIn: function(){
+        this.currentComponent = "loggedin-screen";
       }
     }
   }

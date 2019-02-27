@@ -21,13 +21,14 @@
         recentGames: []
       }
     },
-    dependencies: ["apikey", "userid"],
-    created: function(){
-      $.getJSON('http://localhost:3000/GetRecentlyPlayedGames/?key='+this.apikey+'&steamid='+this.userid).done(data => {
-        this.recentGames = data.response.games
-      });
-    },
-    watch:{ //make graph after JSON data is available
+    dependencies: ["apikey", "userid", "loggedin"],
+    watch:{
+      loggedin: function(){
+        $.getJSON('http://localhost:3000/GetRecentlyPlayedGames/?key='+this.apikey+'&steamid='+this.userid).done(data => {
+          this.recentGames = data.response.games
+        });
+      },
+      //make graph after JSON data is available
       recentGames: function(){
         //make chart
         var ctx = this.$refs.recentGames.getContext('2d');
