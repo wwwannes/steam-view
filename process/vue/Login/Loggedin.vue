@@ -1,33 +1,31 @@
 <template>
   <div class="wrapper">
-    <side-menu @showpage="showpage"/>
-    <div class="main-panel">
-      <topbar :pagetoshow="page"/>
-      <content-container :pagetoshow="page"/>
-    </div>
+    <api-calls @allAPIloaded="allAPIloaded"/>
+    <component :is="pageComponent"/>
   </div>
 </template>
 
 <script>
-  import Topbar from "../Topbar.vue";
-  import Menu from "../Menu.vue";
-  import Content from "../Content.vue";
+  import APIcalls from "../General/APIcalls.vue";
+  import Page from "../General/Page.vue";
 
   export default{
     name: "Loggedin",
     data(){
       return{
-        page: "dashboard"
+        page: "dashboard",
+        doneLoading: false,
+        pageComponent: ""
       }
     },
     components: {
-      "topbar": Topbar,
-      "side-menu": Menu,
-      "content-container": Content,
+      "api-calls": APIcalls,
+      "page": Page
     },
     methods:{
-      showpage: function(page){
-        this.page = page;
+      allAPIloaded: function(page){
+        this.doneLoading = true;
+        this.pageComponent = "page";
       }
     }
   }

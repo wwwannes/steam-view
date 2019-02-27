@@ -1,10 +1,9 @@
 <template>
   <div class="row" :class="{hide: !showpage}">
-    <last-played/>
     <money-spend/>
-    <!--<most-popular/>-->
-    <!--<most-played/>-->
-    <!--<total-achievements/>-->
+    <last-played/>
+    <most-played/>
+    <most-popular/>
   </div>
 </template>
 
@@ -14,7 +13,6 @@
   import MostPlayedGames from "./MostPlayedGames.vue";
   import MostPopularGames from "./MostPopularGames.vue";
   import TotalMoneySpend from "./TotalMoneySpend.vue";
-  import TotalAchievements from "./TotalAchievements.vue";
 
   export default{
     name: "Dashboard",
@@ -23,8 +21,7 @@
       "last-played": LastPlayedGames,
       "most-played": MostPlayedGames,
       "most-popular": MostPopularGames,
-      "money-spend": TotalMoneySpend,
-      "total-achievements": TotalAchievements
+      "money-spend": TotalMoneySpend
     }
   }
 </script>

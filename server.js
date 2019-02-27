@@ -127,6 +127,16 @@ app.get('/GetTopGames', function(req, res) {
 	});
 });
 
+app.get('/GetNumberOfCurrentPlayers', function(req, res) {
+  var appid = req.query.appid;
+	var url = 'https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid='+appid;
+	request(url, function(err, response, body) {
+		if(!err && response.statusCode < 400) {
+			res.send(body);
+		}
+	});
+});
+
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });

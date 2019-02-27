@@ -27,8 +27,7 @@
               <li class="dropdown nav-item">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                   <div class="photo">
-                    <span>Belbo</span>
-                    <!--<img src="./assets/img/anime3.png" alt="Profile Photo">-->
+                    <img :src="profileData.avatarfull" :alt="profileData.personaname">
                   </div>
                   <b class="caret d-none d-lg-block d-xl-block"></b>
                   <p class="d-lg-none">
@@ -37,7 +36,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-navbar">
                   <li class="nav-link">
-                    <a href="javascript:void(0)" class="nav-item dropdown-item">Log out as <span>Belbo</span></a>
+                    <a href="javascript:void(0)" class="nav-item dropdown-item">Log out as <span>{{profileData.personaname}}</span></a>
                   </li>
                 </ul>
               </li>
@@ -49,11 +48,12 @@
 </template>
 
 <script>
-  import ProfileData from "./profile/ProfileData.vue";
+  import ProfileData from "../Profile/ProfileData.vue";
 
   export default{
     name: "Topbar",
     props: ["pagetoshow"],
+    dependencies: ["profileData"],
     components: {
       "profile-data": ProfileData
     }

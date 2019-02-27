@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!--<login-screen/>
-    <loggedin-screen/>-->
     <component :is="currentComponent" @loggedIn="loggedIn" v-if="currentComponent == 'login-screen'"/>
     <component :is="currentComponent" v-else/>
   </div>

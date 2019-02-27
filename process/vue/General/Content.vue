@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  import ProfileData from "./profile/Profile.vue";
-  import Dashboard from "./Widgets/Dashboard.vue";
-  import Games from "./Games/Games.vue";
+  import ProfileData from "../Profile/Profile.vue";
+  import Dashboard from "../Widgets/Dashboard.vue";
+  import Games from "../Games/Games.vue";
 
   export default{
     name: "Content",

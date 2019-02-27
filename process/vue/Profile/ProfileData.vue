@@ -28,50 +28,12 @@
     name: "ProfileData",
     data(){
       return{
-        profileData: [],
-        profileLevel: 0,
-        memberSince: "",
-        lastOnline: ""
+        profileLevel: 0
       }
     },
-    dependencies: ["apikey", "userid"],
+    dependencies: ["profileData", "lastOnline", "memberSince", "apikey", "userid"],
     created: function(){
-      var key = this.apikey;
-      var id = this.userid;
-
-      $.getJSON('http://localhost:3000/GetProfile/?key='+key+'&steamids='+id)
-      .done( data => {
-        var joinDate = new Date(data.response.players[0].timecreated * 1000);
-        var day = joinDate.getDate();
-        var month = joinDate.getMonth();
-        var year = joinDate.getFullYear();
-
-        var onlineDate = data.response.players[0].lastlogoff * 1000; //unix timestamp
-        var thisMoment = new Date().getTime(); //unix timestamp
-        var days = new Date(thisMoment - onlineDate);
-
-        var difHours = Math.round(days/1000/60/60);
-        var difDays = Math.round(days/1000/60/60/24);
-        var difWeeks = Math.round(days/1000/60/60/24/7);
-        var difMonths = Math.round(days/1000/60/60/24/7/12);
-
-        if(difMonths >= 1){
-          this.lastOnline = Math.round(days/1000/60/60/24/7/12) +" months";
-        } else if(difWeeks >= 1){
-          this.lastOnline = Math.round(days/1000/60/60/24/7) +" weeks";
-        } else if(difDays >= 1){
-          this.lastOnline = Math.round(days/1000/60/60/24) +" days";
-        } else if(difHours >= 1){
-          this.lastOnline = Math.round(days/1000/60/60) +" hours";
-        } else {
-          this.lastOnline = "Currently online";
-        }
-
-        this.memberSince = day+"/"+month+"/"+year;
-        this.profileData = data.response.players[0];
-      });
-
-      $.getJSON('http://localhost:3000/GetProfileLevel/?key='+key+'&steamid='+id)
+      $.getJSON('http://localhost:3000/GetProfileLevel/?key='+this.apikey+'&steamid='+this.userid)
       .done( data => {
         this.profileLevel = data.response.player_level;
       });

@@ -1,18 +1,20 @@
 <template>
-  <div class="col-md-4">
+  <div class="col-md-8">
     <div class="card">
       <div class="card-header">
         <h5 class="title">Friendslist</h5>
       </div>
       <div class="card-body">
-        <div v-for="friend in friends" class="friend row">
-          <div class="col-md-4">
-            <img :src="friend.avatarmedium"/>
-          </div>
-          <div class="col-md-8">
-            <h5>{{friend.personaname}}</h5>
-            <span>Last online {{friend.onlineText}} ago</span>
-          </div>
+          <div v-for="friend in friends" class="friend col-md-6">
+            <div class="row">
+              <div class="col-md-4">
+                <img :src="friend.avatarmedium"/>
+              </div>
+              <div class="col-md-8">
+                <h5>{{friend.personaname}}</h5>
+                <span>Last online {{friend.onlineText}} ago</span>
+              </div>
+            </div>
         </div>
       </div>
     </div>
@@ -40,7 +42,6 @@
         $.each(data.friendslist.friends, function(){
           $.getJSON('http://localhost:3000/GetProfile/?key='+key+'&steamids='+this.steamid)
           .done( info => {
-
             var onlineText;
             var onlineDate = info.response.players[0].lastlogoff * 1000; //unix timestamp
             var thisMoment = new Date().getTime(); //unix timestamp
@@ -79,5 +80,10 @@
 <style scoped>
   .friend{
     margin-bottom: 15px;
+    display: inline-block;
+  }
+
+  img{
+    border-radius: 50%;
   }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="col-lg-4">
+  <div class="col-lg-6">
     <div class="card card-chart">
       <div class="card-header">
-        <h3 class="card-title">Most popular games ever</h3>
+        <h3 class="card-title">Most popular games ever <sup>playtime in days</sup></h3>
       </div>
       <div class="card-body">
         <div class="chart-area">
@@ -16,53 +16,39 @@
 <script>
   export default{
     name: "MostPopularGames",
-    data(){
-      return{
-        topGames: []
+    dependencies: ["topGames"],
+    mounted: function(){
+      //make chart
+      var ctx = this.$refs.popularGames.getContext('2d');
+
+      var topGamesName = [];
+      var topGamesPlayers = [];
+
+      for(var i = 0; i < 5; i++){
+        topGamesName.push( this.topGames[i].name );
+        topGamesPlayers.push( (this.topGames[i].average_playtime/24).toFixed(2));
       }
-    },
-    dependencies: ["apikey", "userid"],
-    created: function(){
-      $.getJSON('http://localhost:3000/GetTopGames').done(data => {
-        this.topGames = data;
-      });
-    },
-    watch:{ //make graph after JSON data is available
-      topGames: function(){
-        //make chart
-        var ctx = this.$refs.popularGames.getContext('2d');
 
-        var recentGamesName = [];
-        var recentGamesMinutes = [];
-
-        for(var i = 0; i < this.recentGames.length; i++){
-          recentGamesName.push( this.recentGames[i].name );
-          recentGamesMinutes.push( this.recentGames[i].playtime_2weeks);
+      var myPieChart = new Chart(ctx,{
+        type: 'bar',
+        data: {
+          labels: topGamesName,
+          datasets: [{
+            data: topGamesPlayers,
+            backgroundColor: [
+              '#1b2838',
+              '#24374e',
+              '#2d4461',
+              '#334f72',
+              '#375982'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
         }
-
-        var myPieChart = new Chart(ctx,{
-          type: 'pie',
-          data: {
-            labels: recentGamesName,
-            datasets: [{
-              data: recentGamesMinutes,
-              backgroundColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 0
-            }]
-          },
-          options: {
-            cutoutPercentage: 0,
-            rotation: 35
-          }
-        });
-      }
+      });
     }
   }
 </script>

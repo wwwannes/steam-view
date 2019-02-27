@@ -27,6 +27,9 @@
 </script>
 
 <style scoped>
+  .sidebar{
+    /*background: linear-gradient(0deg,#00adee,#000000);*/
+  }
   .nav li:hover a:before{
     content: " ";
     position: absolute;

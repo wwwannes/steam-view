@@ -8,7 +8,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Profile name</label>
+                <label>Steam profile name</label>
                 <input type="text" class="form-control" v-model="profileName" placeholder="Profile name" value="">
               </div>
               <div class="alert alert-danger" :class="{hide: hideError}">

@@ -2,7 +2,7 @@
   <div class="col-lg-4">
     <div class="card card-chart">
       <div class="card-header">
-        <h3 class="card-title">Recently played (minutes played)</h3>
+        <h3 class="card-title">Recently played</h3>
       </div>
       <div class="card-body">
         <div class="chart-area">
@@ -16,20 +16,8 @@
 <script>
   export default{
     name: "LastPlayedGames",
-    data(){
-      return{
-        recentGames: []
-      }
-    },
-    dependencies: ["apikey", "userid", "loggedin"],
-    watch:{
-      loggedin: function(){
-        $.getJSON('http://localhost:3000/GetRecentlyPlayedGames/?key='+this.apikey+'&steamid='+this.userid).done(data => {
-          this.recentGames = data.response.games
-        });
-      },
-      //make graph after JSON data is available
-      recentGames: function(){
+    dependencies: ["recentGames"],
+    mounted: function(){
         //make chart
         var ctx = this.$refs.recentGames.getContext('2d');
 
@@ -48,12 +36,11 @@
             datasets: [{
               data: recentGamesMinutes,
               backgroundColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
+                  '#1b2838',
+                  '#24374e',
+                  '#2d4461',
+                  '#334f72',
+                  '#375982'
               ],
               borderWidth: 0
             }]
@@ -63,7 +50,6 @@
             rotation: 35
           }
         });
-      }
     }
   }
 </script>

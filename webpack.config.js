@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: './process/main.js',
+  entry: ['./process/main.js', './src/sass/style.scss'],
   output: {
     path: path.resolve(__dirname, './app/builds'),
     publicPath: 'builds/',
@@ -23,18 +23,26 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-          use: [
-            {
-              loader: "style-loader"
-            }, {
-              loader: "css-loader"
-            }, {
-              loader: "sass-loader",
-              options: {
-                  includePaths: ["app/assets/styles/import.scss"]
-              }
-            }
-          ]
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'css/[name].css',
+						}
+					},
+					{
+						loader: 'extract-loader'
+					},
+					{
+						loader: 'css-loader?-url'
+					},
+					{
+						loader: 'postcss-loader'
+					},
+					{
+						loader: 'sass-loader'
+					}
+				]
       },
       {
         test: /\.css$/,
