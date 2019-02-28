@@ -1,10 +1,19 @@
 <template>
   <div class="row gameContainer" :class="{hide: !showpage}">
-    <div class="row" :class="{hide: !hidedetail}">
-      <games-list v-for="(item, i) in games" :key="i" :games="item" @showGameDetail="showGameDetail" @closeDetails="closeDetails"/>
+    <component :is="loadingScreen"/>
+
+    <div class="alert alert-danger" :class="{hide: !error}">
+      <button type="button" aria-hidden="true" class="close" @click="closeError">
+        <b>x</b>
+      </button>
+      <span>No data found for <b>{{gameName}}</b></span>
+    </div>
+
+    <div class="game-list row" :class="{hide: !hidedetail, opacity: opacity, noClick: error}">
+      <games-list v-for="(item, i) in games" :key="i" :games="item" @showLoadingscreen="showLoadingscreen" @showGameDetail="showGameDetail"/>
     </div>
     <div :class="{hide: hidedetail}" ref="detailContainer">
-      <game-detail :game="game" @closeDetails="closeDetails"/>
+      <game-detail :game="game" :gamePlaytime="gamePlaytime" @closeDetails="closeDetails"/>
     </div>
   </div>
 </template>
@@ -18,25 +27,47 @@
     props: ["showpage"],
     data(){
       return{
-        //games: [],
+        gameName: "",
         game: [],
-        hidedetail: true
+        gamePlaytime: 0,
+        hidedetail: true,
+        loadingScreen: "",
+        loading: false,
+        error: false,
+        opacity: false
       }
     },
-    dependencies: ["apikey", "userid", "games"],
-    created: function(){
-      /*$.getJSON('http://localhost:3000/GetOwnedGames/?key='+this.apikey+'&steamid='+this.userid).done(data => {
-        this.games = _.orderBy(data.response.games, function(item){ // Lodash ordering by name
-          return item["name"].toLowerCase();
-        });
-      });*/
-    },
+    dependencies: ["games"],
     methods:{
-      showGameDetail: function(info){
-        this.game = info;
+      showLoadingscreen: function(name){
+        this.gameName = name;
+        this.loading = true;
+        this.opacity = true;
+        this.loadingScreen = "loading-screen"; // loading-screen is declared globally
+      },
+      showGameDetail: function(info, playtime){
+        if(info !== undefined){
+          this.gamePlaytime = playtime;
+          this.game = info;
+          this.loadingScreen = "";
+          this.loading = false;
+          this.hidedetail = false;
+          this.error = false;
+          this.opacity = false;
+          $('html, body').animate({scrollTop:0}, 500, 'swing');
+        } else {
+          this.loadingScreen = "";
+          this.loading = false;
+          this.error = true;
+          this.opacity = true;
+        }
       },
       closeDetails: function(bool){
         this.hidedetail = bool;
+      },
+      closeError: function(){
+        this.error = false;
+        this.opacity = false;
       }
     },
     components: {
@@ -52,5 +83,26 @@
   }
   .hide{
     display: none;
+  }
+  .opacity{
+    opacity: 0.3;
+  }
+  .error{
+    opacity: 0.3;
+  }
+
+  .noClick{
+    pointer-events: none;
+  }
+
+  .alert-danger{
+    z-index: 999;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
   }
 </style>

@@ -8,26 +8,34 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-3 info">
-            <div  v-if="game.developers">
+            <div class="mb">
+              <b class="">Total hours played</b><br/>
+              <span>{{gamePlaytime}} hours</span><br/>
+            </div>
+            <div class="mb">
+              <b class="">Achievements progress</b><br/>
+              <span><b>{{achievementsUnlocked}}</b> out of {{totalAchievements}}</span><br/>
+            </div>
+            <div class="mb" v-if="game.developers">
               <b class="">Developers</b><br/>
               <ul>
                 <li v-for='item in game.developers'>{{item}}</li>
               </ul>
             </div>
-            <div v-if="game.genres">
+            <div class="mb" v-if="game.genres">
               <b class="">Genres</b><br/>
-              <ul>
+              <ul class="genres">
                 <li v-for="item in game.genres" class="col-md-6">{{item.description}}</li>
               </ul>
             </div>
-            <div v-if="game.metacritic">
-              <b class="">Score</b><br/>
-              <a :href="game.metacritic.url" target="_blank">{{game.metacritic.score}}/100</a>
+            <div v-if="game.metacritic" class="score mb">
+              <b class="scoreTitle">Score</b>
+              <a :href="game.metacritic.url" target="_blank">{{game.metacritic.score}}</a>
             </div>
-            <!--<div>
+            <div class="mb" v-if="game.release_data">
               <b>Release data</b>
               <p>{{game.release_data.date}}</p>
-            </div>-->
+            </div>
           </div>
           <div class="col-md-9">
             <p v-html="game.about_the_game" v-if="game.about_the_game"></p>
@@ -51,7 +59,30 @@
 <script>
   export default{
     name: "GameDetail",
-    props: ["game"],
+    data(){
+      return{
+        totalAchievements: 0,
+        achievementsUnlocked: 0
+      }
+    },
+    props: ["game", "gamePlaytime"],
+    dependencies: ["apikey", "userid"],
+    watch: {
+      gamePlaytime: function(){
+        $.getJSON('http://localhost:3000/GetPlayerAchievements/?key='+this.apikey+'&steamid='+this.userid+'&appid='+this.game.steam_appid).done(data => {
+          this.totalAchievements = data.playerstats.achievements.length;
+          this.achievementsUnlocked = 0;
+          for(var i = 0; i < data.playerstats.achievements.length; i++){
+            if( data.playerstats.achievements[i].achieved === 1 ){
+              this.achievementsUnlocked++;
+            }
+          }
+        });
+      }
+    },
+    mounted: function(){
+
+    },
     methods:{
       closeDetails: function(){
         this.$emit('closeDetails', true);
@@ -64,6 +95,10 @@
   .gameDetail{
     position: absolute;
     width: 100%;
+  }
+
+  .mb{
+    margin-bottom: 20px;
   }
 
   .close{
@@ -86,7 +121,47 @@
     transform: translate(-50%, -50%);
   }
 
+  .genres{
+    padding: 0;
+  }
+  .genres li{
+    padding-left: 0;
+    list-style: none;
+    display: inline-block;
+  }
+
+  .score{
+    position:relative;
+    margin-top: 60px;
+  }
+  .scoreTitle{
+    position:relative;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .score a{
+    font-size: 2rem;
+    color: white;
+    border: 2px solid #525f7f;
+    border-radius: 50%;
+    padding: 10px;
+    width: 70px;
+    height: 70px;
+    display: block;
+    text-align: center;
+  }
+
+  .score a:hover{
+    background: #525f7f;
+  }
+
+  span{
+    color: white;
+  }
+
   .categories span{
     font-size: 12px;
+    color: #525f7f;
+    font-style: italic;
   }
 </style>

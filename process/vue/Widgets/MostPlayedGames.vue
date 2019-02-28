@@ -1,13 +1,11 @@
 <template>
-  <div class="col-lg-6">
-    <div class="card card-chart">
-      <div class="card-header">
-        <h3 class="card-title">Most played <sup>in days</sup></h3>
-      </div>
-      <div class="card-body">
-        <div class="chart-area">
-          <canvas id="mostPlayed" ref="mostPlayed" width="400" height="400"></canvas>
-        </div>
+  <div class="card card-chart">
+    <div class="card-header">
+      <h3 class="card-title">Most played <sup>in days</sup></h3>
+    </div>
+    <div class="card-body">
+      <div class="chart-area">
+        <canvas id="mostPlayed" ref="mostPlayed" width="400" height="400"></canvas>
       </div>
     </div>
   </div>
@@ -57,7 +55,10 @@
           }]
         },
         options: {
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          }
         }
       });
     }

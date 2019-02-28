@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/wwwannes/steam-view/master/screenshot.png)
+![alt text](./screenshot.png)
 
 # Steam View
 

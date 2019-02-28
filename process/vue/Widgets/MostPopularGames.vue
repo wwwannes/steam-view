@@ -1,13 +1,11 @@
 <template>
-  <div class="col-lg-6">
-    <div class="card card-chart">
-      <div class="card-header">
-        <h3 class="card-title">Most popular games ever <sup>playtime in days</sup></h3>
-      </div>
-      <div class="card-body">
-        <div class="chart-area">
-          <canvas id="popularGames" ref="popularGames" width="400" height="400"></canvas>
-        </div>
+  <div class="card card-chart">
+    <div class="card-header">
+      <h3 class="card-title">Global most popular games <sup>average playtime in days</sup></h3>
+    </div>
+    <div class="card-body">
+      <div class="chart-area">
+        <canvas id="popularGames" ref="popularGames" width="400" height="400"></canvas>
       </div>
     </div>
   </div>
@@ -24,7 +22,7 @@
       var topGamesName = [];
       var topGamesPlayers = [];
 
-      for(var i = 0; i < 5; i++){
+      for(var i = 0; i < 10; i++){
         topGamesName.push( this.topGames[i].name );
         topGamesPlayers.push( (this.topGames[i].average_playtime/24).toFixed(2));
       }
@@ -40,6 +38,11 @@
               '#24374e',
               '#2d4461',
               '#334f72',
+              '#375982',
+              '#1b2838',
+              '#24374e',
+              '#2d4461',
+              '#334f72',
               '#375982'
             ],
             borderWidth: 0
@@ -47,6 +50,9 @@
         },
         options: {
           maintainAspectRatio: false,
+          legend: {
+            display: false
+          }
         }
       });
     }

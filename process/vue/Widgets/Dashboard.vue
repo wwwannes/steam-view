@@ -1,9 +1,17 @@
 <template>
-  <div class="row" :class="{hide: !showpage}">
-    <money-spend/>
-    <last-played/>
-    <most-played/>
-    <most-popular/>
+  <div :class="{hide: !showpage}">
+    <div class="row">
+      <div class="col-md-4">
+        <money-spend/>
+        <last-played/>
+      </div>
+      <div class="col-md-8">
+        <most-played/>
+      </div>
+    </div>
+    <div class="row">
+      <most-popular/>
+    </div>
   </div>
 </template>
 

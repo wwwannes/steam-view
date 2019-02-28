@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3 text-center" @click="showDetails(games.appid)">
+    <div class="col-md-3 col-sm-4 text-center" @click="showDetails(games.appid, games.name, games.playtime_forever)">
       <div class="card">
         <div class="card-body">
           <div class="author">
@@ -16,21 +16,15 @@
     name: "GamesList",
     props: ["games"],
     methods:{
-      showDetails: function(appid){
+      showDetails: function(appid, name, playtime){
+        var hoursPlayed = Math.round(playtime/60);
+        this.$emit('showLoadingscreen', name);
+        
         $.getJSON('http://localhost:3000/GetDetailsOfGame/?appid='+appid).done(data => {
-          this.$emit("showGameDetail", data[appid.toString()].data);
+          this.$emit("showGameDetail", data[appid.toString()].data, hoursPlayed);
           this.$emit('closeDetails', false);
         });
       }
     }
   }
 </script>
-
-<style scoped>
-  .card{
-    cursor: pointer;
-  }
-  .card:hover{
-    background: linear-gradient(0deg,#ba54f5,#e14eca);
-  }
-</style>

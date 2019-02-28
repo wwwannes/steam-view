@@ -1,3 +1,12 @@
+.game-list{
+  .card{
+    cursor: pointer;
+    &:hover{
+      @include linear-gradient($primary-states, $primary);
+    }
+  }
+}
+
 .card{
     background: $card-black-background;
     border: 0;
@@ -5,6 +14,10 @@
     width: 100%;
     margin-bottom: 30px;
     box-shadow: $box-shadow;
+
+    sup{
+      font-size: 0.6rem;
+    }
 
 
     label{

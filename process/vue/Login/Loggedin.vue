@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <api-calls @allAPIloaded="allAPIloaded"/>
+    <component :is="loadingScreen"/>
     <component :is="pageComponent"/>
   </div>
 </template>
@@ -15,7 +16,8 @@
       return{
         page: "dashboard",
         doneLoading: false,
-        pageComponent: ""
+        pageComponent: "",
+        loadingScreen: "loading-screen" // loading-screen is declared globally
       }
     },
     components: {
@@ -25,6 +27,7 @@
     methods:{
       allAPIloaded: function(page){
         this.doneLoading = true;
+        this.loadingScreen = "";
         this.pageComponent = "page";
       }
     }
