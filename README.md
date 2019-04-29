@@ -3,7 +3,7 @@
 # Steam View
 
 A webapp that uses several API calls to display information for the requested Steam user.
-[View demo](https://wannesverelst.me/steam-view/)
+[View demo](https://wannesverelst.me/playground/steam-view)
 
 ## Local installation
 - Install all needed node modules
