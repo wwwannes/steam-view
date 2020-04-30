@@ -9,7 +9,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "extract-loader": "^3.1.0",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.4",
     "request": "^2.88.0",
     "vue": "^2.3.3"
